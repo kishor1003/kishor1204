@@ -1,0 +1,217 @@
+Microsoft Windows [Version 10.0.26100.4652]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -h localhost -u root -p
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 21
+Server version: 8.0.43 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+6 rows in set (0.07 sec)
+
+mysql> create database Inventory;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> use Inventory;
+Database changed
+mysql> create table product(pid int primary key,pname varchar(20),price float);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> create table sale(sid int,pid int,quantity int,FOREIGN KEY(pid) REFERENCES product(pid));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table supplier(suppid int,sname varchar(20),address varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> alter table supplier add primary key(suppid);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table supplier add CONSTRAINT chk CHECK(suppid>900);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create user 'Rajesh'@localhost identified by 'rajesh123';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> grant select on *.* to 'Rajesh'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create user 'Mohit'@localhost identified by 'mohit186';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> grant select on Inventory.* to 'Mohit'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc sale;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| sid      | int  | YES  |     | NULL    |       |
+| pid      | int  | YES  | MUL | NULL    |       |
+| quantity | int  | YES  |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc product;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| pid   | int         | NO   | PRI | NULL    |       |
+| pname | varchar(20) | YES  |     | NULL    |       |
+| price | float       | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc supplier;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| suppid  | int         | NO   | PRI | NULL    |       |
+| sname   | varchar(20) | YES  |     | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+
+USER RAJESH
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -h localhost -u Rajesh -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 23
+Server version: 8.0.43 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use Inventory;
+Database changed
+mysql> desc sale;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| sid      | int  | YES  |     | NULL    |       |
+| pid      | int  | YES  | MUL | NULL    |       |
+| quantity | int  | YES  |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc product;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| pid   | int         | NO   | PRI | NULL    |       |
+| pname | varchar(20) | YES  |     | NULL    |       |
+| price | float       | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc supplier;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| suppid  | int         | NO   | PRI | NULL    |       |
+| sname   | varchar(20) | YES  |     | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
+| email   | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table supplier rename column supplier to merchant;
+ERROR 1142 (42000): ALTER command denied to user 'Rajesh'@'localhost' for table 'supplier'
+mysql> show grants for 'Rajesh'@localhost;
++---------------------------------------------+
+| Grants for Rajesh@localhost                 |
++---------------------------------------------+
+| GRANT SELECT ON *.* TO `Rajesh`@`localhost` |
++---------------------------------------------+
+1 row in set (0.00 sec)
+
+mohit
+Microsoft Windows [Version 10.0.26100.4652]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 9.3\bin>mysql -h localhost -u mohit -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use inventory;
+Database changed
+mysql> desc supplier;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| supid       | int         | NO   | PRI | NULL    |       |
+| supname     | varchar(20) | YES  |     | NULL    |       |
+| supadddress | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.064 sec)
+
+mysql> show grants for 'mohit'@localhost;
++--------------------------------------------------------------+
+| Grants for mohit@localhost                                   |
++--------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `mohit`@`localhost`                    |
+| GRANT ALL PRIVILEGES ON `inventory`.* TO `mohit`@`localhost` |
++--------------------------------------------------------------+
+2 rows in set (0.008 sec)
+
+mysql> use inventory;
+Database changed
+mysql> desc product;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| pid   | int         | NO   | PRI | NULL    |       |
+| pname | varchar(20) | YES  |     | NULL    |       |
+| price | float       | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.059 sec)
+
+mysql> use inventory;
+Database changed
+mysql> desc sale;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| sid   | int  | YES  |     | NULL    |       |
+| pid   | int  | YES  | MUL | NULL    |       |
+| qty   | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+3 rows in set (0.036 sec)
+
